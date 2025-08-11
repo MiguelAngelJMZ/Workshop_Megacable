@@ -17,20 +17,33 @@
 # MAGIC A lo largo de este notebook, descubrirán cómo Databricks se posiciona como una solución única, centralizando todo el proceso en un solo lugar. Usaremos herramientas clave como Lakeflow Declarative Pipelines para automatizar nuestros flujos, Auto Loader para gestionar los datos de manera incremental y ETL con Spark para aplicar las transformaciones necesarias.
 # MAGIC
 # MAGIC El objetivo es que entiendan cómo construir pipelines de datos eficientes y escalables, superando los obstáculos que la ingeniería de datos presenta comúnmente. ¡Manos a la obra!
+# MAGIC <br></br>
+# MAGIC
+# MAGIC ## Prerrequisitos
+# MAGIC La ejecución de este Notebook supone que ya has ejecutado el Notebook de Data Governance: [Data Governance]($./01. Data Governance) 
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 1.1 El Desafío de los Pipelines de Datos
+# MAGIC ## 2. Data Engineering
+# MAGIC
+# MAGIC La ingeniería de datos es una disciplina clave que se enfoca en crear y mantener los sistemas y procesos necesarios para manejar datos. Su objetivo principal es asegurar que los datos correctos estén disponibles, con la calidad y en el momento oportuno, para que equipos como analistas y científicos de datos puedan utilizarlos eficazmente.
+# MAGIC
+# MAGIC En el mundo actual, la ingeniería de datos es crucial para el desarrollo de plataformas avanzadas, como los data lakehouse, que facilitan el acceso a la información y aceleran la toma de decisiones dentro de una organización.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 2.1 El Desafío de los Pipelines de Datos
 # MAGIC Construir y mantener pipelines de datos confiables es una tarea compleja, pero ¿por qué?
 # MAGIC
 # MAGIC El desafío principal es la diversidad. Los datos provienen de múltiples fuentes y formatos, lo que exige un gran esfuerzo para limpiarlos, transformarlos e integrarlos correctamente.
 # MAGIC
 # MAGIC Además de esto, existen otros dos factores clave que añaden complejidad:
 # MAGIC
-# MAGIC - Calidad de los datos: Mantener una calidad alta a lo largo de todo el pipeline es crucial, y a menudo, difícil de lograr.
+# MAGIC - **Calidad de los datos:** Mantener una calidad alta a lo largo de todo el pipeline es crucial, y a menudo, difícil de lograr.
 # MAGIC
-# MAGIC - Complejidad operativa: Integrar el streaming en tiempo real y la orquestación de datos introduce una capa adicional de dificultad que requiere un manejo cuidadoso.
+# MAGIC - **Complejidad operativa:** Integrar el streaming en tiempo real y la orquestación de datos introduce una capa adicional de dificultad que requiere un manejo cuidadoso.
 # MAGIC
 # MAGIC En resumen, no es solo mover datos de un lugar a otro, es gestionar la diversidad, la calidad y la complejidad operativa de principio a fin.
 
@@ -45,7 +58,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 1.2 La Solución de Databricks para la Ingeniería de Datos
+# MAGIC ### 2.2 La Solución de Databricks para la Ingeniería de Datos
 # MAGIC
 # MAGIC La ingeniería de datos se divide en cuatro componentes principales. Con la plataforma de Databricks, cada uno se integra a la perfección, simplificando el proceso de principio a fin.
 # MAGIC
@@ -73,7 +86,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 2. Setup
+# MAGIC ## 3. Setup
 # MAGIC
 # MAGIC Ejecuta la siguiente celda para fijar tu ambiente de trabajo para este curso
 
@@ -84,14 +97,14 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 3. Tabla de Codigo Postal
+# MAGIC ## 4. Tabla de Codigo Postal
 # MAGIC
-# MAGIC Una de las tablas del dataset es la Codigo Postal, para ingestar esta tabla usaremos el componente dentro de Databricks llamado Lakeflow Declarative Pipelines
+# MAGIC Una de las tablas del dataset es la de Codigo Postal, para ingestar esta tabla usaremos el componente dentro de Databricks llamado Lakeflow Declarative Pipelines
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 3.1 Lakeflow Declarative Pipelines
+# MAGIC ### 4.1 Lakeflow Declarative Pipelines
 # MAGIC <br></br>
 # MAGIC <div align="center">
 # MAGIC   <img src="images/Declarative_Pipelines1.png" alt="Descripción" width="800">
@@ -106,7 +119,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.1.1 Copia de datos
+# MAGIC #### 4.1.1 Copia de datos
 # MAGIC
 # MAGIC Ejecuta la siguiente celda para realizar la copia de datos desde el repositorio de GitHub hacia nuestro volúmen en Databricks
 
@@ -117,7 +130,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.1.2 Construye un Declarative Pipeline
+# MAGIC #### 4.1.2 Construye un Declarative Pipeline
 # MAGIC
 # MAGIC Ejecuta la siguiente línea de código, accede al enlace y ejecuta el Pipeline
 
@@ -128,7 +141,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 3.2 Lakeflow Designer (PrPr)
+# MAGIC ### 4.2 Lakeflow Designer (PrPr)
 # MAGIC
 # MAGIC Nos complace anunciar Lakeflow Designer, un generador de pipelines sin código, basado en IA y totalmente integrado con la plataforma de inteligencia de datos de Databricks. Con un lienzo visual y una interfaz de lenguaje natural integrada, Designer permite a los analistas de negocio crear pipelines de producción escalables y realizar análisis de datos sin escribir una sola línea de código, todo en un único producto unificado.
 # MAGIC
@@ -146,21 +159,24 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 4. Tabla Clientes
+# MAGIC ## 5. Tabla Clientes
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 4.1. Ingesta de datos con Auto Loader (Fuente -> Bronze)
+# MAGIC ### 5.1. Ingesta de datos con Auto Loader (Fuente -> Bronze)
 # MAGIC
 # MAGIC El componente Auto Loader de Databricks permite la ingesta de nuevos archivos de datos de manera incremental y eficiente a medida que llegan al almacenamiento en la nube, sin necesidad de configuraciones adicionales. Este mecanismo es especialmente útil para procesar millones de archivos en tiempo real, apoyando formatos como JSON, CSV, PARQUET, entre otros.
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 4.1.1 Realiza una copia de los datos a un Volumen de Databricks
+# MAGIC #### 5.1.1 Realiza una copia de los datos a un Volumen de Databricks
 # MAGIC
 # MAGIC Ejecuta la siguiente celda para realizar la copia de datos desde el repositorio de GitHub hacia nuestro volúmen en Databricks
+# MAGIC
+# MAGIC Toma en cuenta lo siguiente:
+# MAGIC 1. **input_path:** ruta del volumen/almacenamiento donde se guardan los archivos a procesar
 
 # COMMAND ----------
 
@@ -168,6 +184,7 @@
 
 # COMMAND ----------
 
+# Realiza lectura de los datos
 df = (
     spark.readStream
     .format("cloudFiles")
@@ -179,7 +196,7 @@ df = (
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 4.1.2 Ejecuta una consulta sobre los datos en Streaming
+# MAGIC #### 5.1.2 Ejecuta una consulta sobre los datos en Streaming
 # MAGIC
 # MAGIC Utiliza el comando writeStream para escribir en memoria los datos streaming y posteriormente desplegar
 
@@ -200,9 +217,9 @@ display(streaming_df.limit(5))  # Esto despliega la tabla en memoria
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 4.1.3 Cambia el nombre de las columnas para acoplarse a la tabla base y el formato delta
+# MAGIC #### 5.1.3 Cambia el nombre de las columnas para acoplarse a la tabla base y el formato delta
 # MAGIC
-# MAGIC Las tablas delta no permiten cierto tipo de carácters, por lo que se debe cambiar el nombre de las columnas para que sean compatibles con la tabla delta.
+# MAGIC Las tablas delta no permiten cierto tipo de carácters como nombres de columna, por lo que se debe cambiar el nombre de las columnas para que sean compatibles con la tabla delta.
 # MAGIC
 # MAGIC * Espacio (' ') 
 # MAGIC * Coma (,)
@@ -269,15 +286,19 @@ df_renamed = reduce(
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 4.1.4 Define una tarea Auto Loader
+# MAGIC #### 5.1.4 Define una tarea Auto Loader
 # MAGIC
 # MAGIC Para esta tarea, vamos a procesar los datos de Cliente que están en el Volumen `workshop_megacable.<nombre_usuario>_raw_data` en la carpeta **clientes**
 # MAGIC
-# MAGIC > Toma en cuenta lo siguiente:
-# MAGIC 1. input_path: ruta del volumen/almacenamiento donde se guardan los archivos a procesar
-# MAGIC 2. checkpoint_path: es el directorio donde se guarda el "estado de progreso" de la ingesta en modo streaming. Gracias a esto, Auto Loader ofrece la garantía de procesar los archivos exactamente una vez (exactly-once processing).
-# MAGIC 3. table_name: nombre de la tabla destino donde se guarda la información de **input_path**
-# MAGIC 4. schema_location: almacena la información sobre la evolución del esquema de los datos a lo largo del tiempo
+# MAGIC Toma en cuenta lo siguiente:
+# MAGIC 1. **checkpoint_path:** es el directorio donde se guarda el "estado de progreso" de la ingesta en modo streaming. Gracias a esto, Auto Loader ofrece la garantía de procesar los archivos exactamente una vez (exactly-once processing).
+# MAGIC 2. **table_name:** nombre de la tabla destino donde se guarda la información de **input_path**
+# MAGIC 3. **schema_location:** almacena la información sobre la evolución del esquema de los datos a lo largo del tiempo
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 1. Lee los datos en streaming que se encuentren en el volumen y escribe sobre tabla en bronze
 
 # COMMAND ----------
 
@@ -294,13 +315,29 @@ query = (
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC 2. Consulta la información de la tabla bronze
+
+# COMMAND ----------
+
 sql_command = f"""SELECT * FROM workshop_megacable.{usuario}_bronze.clientes"""
 
 display(spark.sql(sql_command))
 
 # COMMAND ----------
 
-# MAGIC %run ./setup/Copia_Clientes2
+# MAGIC %md
+# MAGIC 3. Realiza otra copia de archivos hacia el Volumen de clientes
+
+# COMMAND ----------
+
+# Realiza otra copia de archivos al Volumen de 
+%run ./setup/Copia_Clientes2
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 4. Lee los datos en streaming que se encuentren en el volumen y escribe sobre tabla en bronze
 
 # COMMAND ----------
 
@@ -317,6 +354,11 @@ query = (
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC 5. Consulta nuevamente la tabla bronce
+
+# COMMAND ----------
+
 sql_command = f"""SELECT * FROM workshop_megacable.{usuario}_bronze.clientes"""
 
 display(spark.sql(sql_command))
@@ -324,12 +366,12 @@ display(spark.sql(sql_command))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 4.2 Transforma tus datos (bronze -> silver)
+# MAGIC ### 5.2 Transforma tus datos (bronze -> silver)
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.2.1 Corrección de esquema
+# MAGIC #### 5.2.1 Corrección de esquema
 # MAGIC
 # MAGIC En la capa Bronze, los datos suelen llegar con tipos de datos genéricos o incorrectos. Antes de aplicar cualquier otra transformación y mover la información a la capa Silver, es fundamental corregir el esquema.
 # MAGIC
@@ -400,11 +442,11 @@ display(bronze_clientes.limit(10))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.2.2 Eliminación de duplicados
+# MAGIC #### 5.2.2 Eliminación de duplicados
 # MAGIC
-# MAGIC Para este paso, nos enfocaremos en la columna id_cliente, que funciona como el identificador único de nuestra tabla.
+# MAGIC Para este paso, nos enfocaremos en la columna **id_cliente**, que funciona como el identificador único de nuestra tabla.
 # MAGIC
-# MAGIC Dado que las filas duplicadas tienen los mismos valores en todas las columnas, solo necesitamos quedarnos con una de ellas. Nos basaremos únicamente en id_cliente para identificar y eliminar los registros duplicados, conservando una única entrada por cada cliente.
+# MAGIC Dado que las filas duplicadas tienen los mismos valores en todas las columnas, solo necesitamos quedarnos con una de ellas. Nos basaremos únicamente en **id_cliente** para identificar y eliminar los registros duplicados, conservando una única entrada por cada cliente.
 
 # COMMAND ----------
 
@@ -417,9 +459,9 @@ bronze_clientes.count()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.2.3 Limpieza de outliers
+# MAGIC #### 5.2.3 Limpieza de outliers
 # MAGIC
-# MAGIC Para este paso, nos centraremos en la columna numero_referidos.
+# MAGIC Para este paso, nos centraremos en la columna **numero_referidos**.
 # MAGIC
 # MAGIC Según las reglas de negocio, eliminaremos todos los registros que se encuentren fuera del rango del 5% al 95% de la distribución normal de los datos. Esta acción nos ayudará a eliminar los valores atípicos y a trabajar con un conjunto de datos más consistente y representativo.
 
@@ -445,10 +487,10 @@ bronze_clientes.count()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.2.4 Validar Valores con Catálogo
-# MAGIC En este paso, nos enfocaremos en la columna codigo_postal.
+# MAGIC #### 5.2.4 Validar Valores con Catálogo
+# MAGIC En este paso, nos enfocaremos en la columna **codigo_postal**.
 # MAGIC
-# MAGIC Una regla de negocio común es validar que los valores de una columna existan en un catálogo maestro. Para esta transformación, nos aseguraremos de que todos los registros que pasen a la capa Silver tengan un codigo_postal que coincida con uno de los valores de la tabla codigo_postal.
+# MAGIC Una regla de negocio común es validar que los valores de una columna existan en un catálogo maestro. Para esta transformación, nos aseguraremos de que todos los registros que pasen a la capa Silver tengan un **id_codigo_postal** que coincida con uno de los valores de la tabla **codigo_postal**.
 # MAGIC
 # MAGIC Todos los registros que no cumplan con esta validación serán eliminados.
 
@@ -482,7 +524,7 @@ bronze_clientes.count()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.2.5 Normalización de Valores
+# MAGIC #### 5.2.5 Normalización de Valores
 # MAGIC Para esta transformación, nos enfocaremos en las columnas genero y tipo_pago.
 # MAGIC
 # MAGIC A menudo, los datos del cliente contienen errores o inconsistencias en sus valores. Para corregir esto, aplicaremos las siguientes reglas de normalización:
@@ -507,7 +549,7 @@ display(bronze_clientes.limit(50))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.2.6 Ingesta tus datos en la capa Silver
+# MAGIC #### 5.2.6 Ingesta tus datos en la capa Silver
 
 # COMMAND ----------
 
@@ -517,7 +559,7 @@ bronze_clientes.write.mode("overwrite").saveAsTable(f"workshop_megacable.{usuari
 
 # MAGIC %md
 # MAGIC
-# MAGIC ### 4.3 Creación de tablas Gold
+# MAGIC ### 5.3 Creación de tablas Gold
 
 # COMMAND ----------
 

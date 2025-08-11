@@ -1,9 +1,7 @@
 # Databricks notebook source
-# MAGIC %pip install databricks-sdk -q
-# MAGIC
-# MAGIC from databricks.sdk import WorkspaceClient
-# MAGIC from databricks.sdk.service import pipelines
-# MAGIC import time
+from databricks.sdk import WorkspaceClient
+from databricks.sdk.service import pipelines
+import time
 
 # COMMAND ----------
 
@@ -17,7 +15,7 @@ spark.sql(f"""CREATE SCHEMA IF NOT EXISTS workshop_megacable.{usuario}_raw_data"
 
 # COMMAND ----------
 
-spark.sql(f"""CREATE VOLUME IF NOT EXISTS workshop_megacable.{usuario}_raw_data.codigo_postal""")
+spark.sql(f"""CREATE VOLUME IF NOT EXISTS workshop_megacable.{usuario}_raw_data.clientes""")
 
 
 # COMMAND ----------

@@ -13,10 +13,10 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Workshop Databricks para BI: Fundamentos y Herramientas Clave en Lakehouse
+# MAGIC ## Laboratorio Databricks: Fundamentos y Herramientas Clave en Lakehouse
 # MAGIC
 # MAGIC
-# MAGIC ¡Prepárate para dominar Databricks! En este laboratorio, te sumergirás en los fundamentos de la plataforma, aprendiendo a potenciar tus habilidades en Business Intelligence.
+# MAGIC ¡Prepárate para dominar Databricks! En este laboratorio, te sumergirás en los fundamentos de la plataforma, aprendiendo a potenciar tus habilidades en Data Engineering y Business Intelligence.
 # MAGIC
 # MAGIC A lo largo de la sesión, descubrirás los pilares clave que hacen de Databricks una herramienta líder en la industria:
 # MAGIC
@@ -31,7 +31,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Agenda
+# MAGIC ### 1. Agenda
 # MAGIC
 # MAGIC Para garantizar un aprendizaje práctico y efectivo, contarás con una serie de notebooks autodescriptivos. Sigue la secuencia de ejecución de cada uno y, paso a paso, dominarás los conceptos y la implementación del código. 
 # MAGIC <br>
@@ -43,12 +43,12 @@
 # MAGIC | 03 | [Data Visualization]($./03. Data Visualizaciones) |
 # MAGIC
 # MAGIC <br>
-# MAGIC Al finalizar, habrás adquirido una base sólida en Databricks, con conocimientos prácticos y aplicables a proyectos reales de BI.
+# MAGIC Al finalizar, habrás adquirido una base sólida en Databricks, con conocimientos prácticos y aplicables a proyectos reales de Data Engineering y Business Intelligence.
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Datos
+# MAGIC ### 2. Datos
 # MAGIC Para este laboratorio vamos a ocupar el dataset de un empresa telecom ficticia llamada Telio. Este dataset consiste en dos tablas:
 # MAGIC
 # MAGIC 1. **Clientes:** la tabla de abandono de clientes contiene información sobre los 7043 clientes de una empresa de telecomunicaciones llamada Telio, en California, durante el segundo trimestre de 2022. Cada registro representa a un cliente y contiene detalles sobre sus datos demográficos, ubicación, antigüedad, servicios de suscripción, estado del trimestre (incorporación, permanencia o abandono) y mucho más.
@@ -60,7 +60,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Prerrequisitos
+# MAGIC ### 3. Prerrequisitos
 # MAGIC El contenido fue desarrollado tomando en cuenta que los participantes tienen los siguientes privilegios:
 # MAGIC - USE CATALOG workshop_megacable
 # MAGIC - Uso de Compute Serverless

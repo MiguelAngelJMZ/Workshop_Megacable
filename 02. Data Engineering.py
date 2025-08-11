@@ -86,11 +86,12 @@
 # MAGIC %md
 # MAGIC ## 3. Tabla de Codigo Postal
 # MAGIC
+# MAGIC Una de las tablas del dataset es la Codigo Postal, para ingestar esta tabla usaremos el componente dentro de Databricks llamado Lakeflow Declarative Pipelines
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 3.1 Lakeflow Daclarative Piopelines
+# MAGIC ### 3.1 Lakeflow Declarative Pipelines
 # MAGIC <br></br>
 # MAGIC <div align="center">
 # MAGIC   <img src="images/Declarative_Pipelines1.png" alt="Descripción" width="800">
@@ -127,7 +128,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 3.2 Lakeflow Designer
+# MAGIC ### 3.2 Lakeflow Designer (PrPr)
 # MAGIC
 # MAGIC Nos complace anunciar Lakeflow Designer, un generador de pipelines sin código, basado en IA y totalmente integrado con la plataforma de inteligencia de datos de Databricks. Con un lienzo visual y una interfaz de lenguaje natural integrada, Designer permite a los analistas de negocio crear pipelines de producción escalables y realizar análisis de datos sin escribir una sola línea de código, todo en un único producto unificado.
 # MAGIC
@@ -295,7 +296,7 @@ query = (
 
 sql_command = f"""SELECT * FROM workshop_megacable.{usuario}_bronze.clientes"""
 
-display(sql_command)
+display(spark.sql(sql_command))
 
 # COMMAND ----------
 
@@ -318,7 +319,7 @@ query = (
 
 sql_command = f"""SELECT * FROM workshop_megacable.{usuario}_bronze.clientes"""
 
-display(sql_command)
+display(spark.sql(sql_command))
 
 # COMMAND ----------
 
@@ -454,7 +455,7 @@ bronze_clientes.count()
 # COMMAND ----------
 
 # Leamos la tabla Código Postal
-codigo_postal = spark.read.table(f"workshop_megacable.{usuario}_silver.codigo_postal")
+codigo_postal = spark.read.table(f"workshop_megacable.{usuario}_silver.codigo_postal").dropDuplicates(['id_codigo_postal'])
 
 # COMMAND ----------
 
@@ -497,11 +498,20 @@ display(bronze_clientes.limit(50))
 # COMMAND ----------
 
 bronze_clientes = bronze_clientes.replace({"F": "Female", "M": "Male"}, subset=["genero"]) \
-  .replace({'BW': 'Bank Withdrawal', 'CC': 'Credit Card', 'M': 'Mailed Check'})
+  .replace({'BW': 'Bank Withdrawal', 'CC': 'Credit Card', 'M': 'Mailed Check'}, subset=['tipo_pago'])
 
 # COMMAND ----------
 
 display(bronze_clientes.limit(50))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC #### 3.2.6 Ingesta tus datos en la capa Silver
+
+# COMMAND ----------
+
+bronze_clientes.write.mode("overwrite").saveAsTable(f"workshop_megacable.{usuario}_silver.clientes")
 
 # COMMAND ----------
 

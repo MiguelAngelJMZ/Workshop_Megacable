@@ -1,19 +1,21 @@
 # Databricks notebook source
-# MAGIC %pip install databricks-sdk -q
-# MAGIC
-# MAGIC from databricks.sdk import WorkspaceClient
-# MAGIC from databricks.sdk.service import pipelines
-# MAGIC import time
-# MAGIC
-# MAGIC w = WorkspaceClient()
+# %pip install --upgrade databricks-sdk -q
 
 # COMMAND ----------
+
+# dbutils.library.restartPython()
+
+# COMMAND ----------
+
+from databricks.sdk import WorkspaceClient
+from databricks.sdk.service import pipelines
+import time
 
 w = WorkspaceClient()
 email = w.current_user.me().user_name
 usuario = email.split("@")[0].replace(".", "_")
 
-notebook_path = f'/Workspace/Users/{usuario}/Workshop_Megacable/setup/00_Lakeflow_Declarative_Pipeline/Codigo_Postal'
+notebook_path = f'/Workspace/Users/{email}/Workshop_Megacable/setup/00_Lakeflow_Declarative_Pipeline/Codigo_Postal'
 
 
 name = f"{usuario}_pipeline_codigo_postal"

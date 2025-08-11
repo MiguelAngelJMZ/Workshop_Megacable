@@ -29,10 +29,7 @@
 
 # MAGIC %md
 # MAGIC ### 2.1 El Desafío de la Gobernanza de Datos
-
-# COMMAND ----------
-
-# MAGIC %md
+# MAGIC
 # MAGIC Todos sabemos que gobernar los datos es importante, pero la realidad es que la fragmentación lo complica.
 # MAGIC
 # MAGIC Los datos están dispersos en múltiples lugares y formatos (bases de datos, data lakes, Delta Lake, Iceberg, etc.), además de existir otros activos como modelos de IA y dashboards. Esto crea silos y desafíos clave:
@@ -42,7 +39,6 @@
 # MAGIC - Falta de conectividad: Los usuarios no pueden compartir datos y modelos entre herramientas.
 # MAGIC
 # MAGIC - Falta de inteligencia: Es difícil para los usuarios encontrar y entender los datos, dependiendo demasiado de expertos.
-# MAGIC
 
 # COMMAND ----------
 
@@ -56,10 +52,7 @@
 
 # MAGIC %md
 # MAGIC ### 2.2 La solución de Databricks para la Gobernanza de Datos
-
-# COMMAND ----------
-
-# MAGIC %md
+# MAGIC
 # MAGIC Unity Catalog de Databricks es la primera solución de gobernanza de datos e IA unificada y abierta.
 # MAGIC
 # MAGIC A diferencia de los catálogos tradicionales, que solo gestionan el acceso a tablas, Unity:
@@ -83,7 +76,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 2. Setup
+# MAGIC ## 3. Setup
 # MAGIC
 # MAGIC Ejecuta la siguiente celda para fijar tu ambiente de trabajo para este curso
 # MAGIC
@@ -95,14 +88,14 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ##3. Crear contenedores de datos en Unity Catalog
+# MAGIC ##4. Crear contenedores de datos en Unity Catalog
 # MAGIC
 # MAGIC En esta sección, exploraremos cómo crear contenedores de datos y objetos en Unity Catalog.
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 3.1 Catálogos
+# MAGIC ### 4.1 Catálogos
 # MAGIC
 # MAGIC Un catálogo en Unity Catalog el contenedor de nivel superior que organiza y agrupa esquemas, tablas y otros objetos de datos dentro de la plataforma Databricks. Cada catálogo actúa como un espacio lógico donde se definen los permisos y la estructura de los datos, permitiendo segmentar y administrar de manera separada los diferentes conjuntos de información de una organización.
 # MAGIC
@@ -115,7 +108,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.1.1 Crear Catálogos
+# MAGIC #### 4.1.1 Crear Catálogos
 # MAGIC Para crear un catálogo, utiliza la instrucción `CREATE CATALOG <nombre_del_catálogo>`. La palabra clave `IF NOT EXISTS` evitará errores si el nombre del catálogo ya existe.
 # MAGIC
 # MAGIC Para este laboratorio vamos a crear el catálogo llamado **workshop_megacable**
@@ -127,8 +120,8 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.1.2 Metadatos del Catálogo
-# MAGIC Utiliza el comando `DESCRIBE CATALOG <nombre_del_catalogo>` para consultar los metadatos básicos del cátalogo como Nombre, Comentarios y Propitarios. En adición, utiliza el comando `EXTENDED` para consultar metadatos adicionales del catálogo.
+# MAGIC #### 4.1.2 Metadatos del Catálogo
+# MAGIC Utiliza el comando `DESCRIBE CATALOG <nombre_del_catalogo>` para consultar los metadatos básicos del cátalogo como Nombre, Comentarios y Propietarios. En adición, utiliza el comando `EXTENDED` para consultar metadatos adicionales del catálogo.
 
 # COMMAND ----------
 
@@ -145,17 +138,17 @@ display(spark.sql(sql_command))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 3.2 Schemas
+# MAGIC ### 4.2 Schemas
 # MAGIC
 # MAGIC Un esquema en Unity Catalog es similar al de los esquemas o bases de datos con los que probablemente ya estás familiarizado. Los esquemas contienen objetos de datos como tablas y vistas, pero también pueden contener funciones y modelos de aprendizaje automático/inteligencia artificial.
 # MAGIC
 # MAGIC Para este taller, usaremos la arquitectura del esquema medallón, un enfoque que organiza tus datos en diferentes etapas de procesamiento. Crearemos un esquema para cada una de ellas:
 # MAGIC
-# MAGIC - Bronze (`workshop_megable.<nombre_usuario>.bronze`): Aquí recibiremos los datos en crudo, sin ninguna modificación. Es nuestra zona de aterrizaje.
+# MAGIC - **Bronze** (`workshop_megable.<nombre_usuario>.bronze`): Aquí recibiremos los datos en crudo, sin ninguna modificación. Es nuestra zona de aterrizaje.
 # MAGIC
-# MAGIC - Silver (`workshop_megable.<nombre_usuario>.silver`): En esta capa, aplicaremos transformaciones y reglas de negocio. Los datos ya estarán limpios y estructurados, siguiendo un modelo de datos definido.
+# MAGIC - **Silver** (`workshop_megable.<nombre_usuario>.silver`): En esta capa, aplicaremos transformaciones y reglas de negocio. Los datos ya estarán limpios y estructurados, siguiendo un modelo de datos definido.
 # MAGIC
-# MAGIC - Gold (`workshop_megable.<nombre_usuario>.gold`): Esta es la capa final, lista para el consumo de los usuarios. Aquí los datos ya están preparados para análisis y reportes.
+# MAGIC - **Gold** (`workshop_megable.<nombre_usuario>.gold`): Esta es la capa final, lista para el consumo de los usuarios. Aquí los datos ya están preparados para análisis y reportes.
 # MAGIC
 # MAGIC
 # MAGIC
@@ -168,7 +161,7 @@ display(spark.sql(sql_command))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.2.1 Crear Esquema
+# MAGIC #### 4.2.1 Crear Esquema
 # MAGIC Para crear un esquema, utiliza la instrucción CREATE SCHEMA `<nombre_del_catálogo>.<nombre_del_esquema>`. La palabra clave IF NOT EXISTS evitará errores si el nombre del esquema ya existe en ese catálogo.
 
 # COMMAND ----------
@@ -184,7 +177,7 @@ display(spark.sql(sql_command_gold))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.2.2 Esquemas contenidos en el catálogo
+# MAGIC #### 4.2.2 Esquemas contenidos en el catálogo
 # MAGIC
 # MAGIC Utiliza el comando `SHOW SCHEMAS IN <nombre_catalogo>` para mostrar todos los esquemas contenidos en ese catálogo.
 
@@ -197,7 +190,7 @@ display(spark.sql(sql_command))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.2.3 Metadatos del esquema
+# MAGIC #### 4.2.3 Metadatos del esquema
 # MAGIC
 # MAGIC Utiliza el comando `DESCRIBE SCHEMA <nombre_del_catalogo>.<nombre_esquema>` para consultar los metadatos básicos del cátalogo como Nombre, Comentarios y Propitarios. En adición, utiliza el comando `EXTENDED` para consultar metadatos adicionales del catálogo.
 
@@ -216,7 +209,7 @@ display(spark.sql(sql_command))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.2.4 Cometarios sobre esquemas
+# MAGIC #### 4.2.4 Cometarios sobre esquemas
 # MAGIC
 # MAGIC Utiliza el comando `ALTER SCHEMA <nombre_catalogo>.<nombre_esquema> SET COMMENT = 'comentario'` para describir el propósito del esquema. Añadir comentarios sobre los activos de datos aumenta la gobernanza y administración futura.
 
@@ -233,7 +226,7 @@ display(spark.sql(sql_command_gold))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 3.3 Managed Tables
+# MAGIC ### 4.3 Managed Tables
 # MAGIC
 # MAGIC Las "Managed Tables" en Unity Catalog son tablas gestionadas por Databricks, donde tanto los metadatos como los datos físicos (archivos en almacenamiento) son controlados automáticamente por la plataforma. Cuando creas una tabla gestionada, Unity Catalog se encarga de almacenar los archivos de datos en una ubicación definida por el sistema y administra toda la vida útil de esos datos, incluyendo su creación y eliminación.
 # MAGIC
@@ -244,17 +237,17 @@ display(spark.sql(sql_command_gold))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.1 Create a Managed Table
+# MAGIC #### 3.1 Crea una Managed Table
 # MAGIC
 # MAGIC 1. Utiliza el comando 
 # MAGIC `CREATE OR REPLACE TABLE <nombre_catalogo>.<nombre_schema>.<nombre_tabla> ( { column_identifier column_type [ column_properties ] } [, ...]
 # MAGIC     [ , table_constraint ] [...] )` para crear una tabla administrada en Unity Catalog
 # MAGIC
 # MAGIC     Toma en cuenta lo siguiente:
-# MAGIC     * column_identifier: nombre de la columna
-# MAGIC     * column_type: tipo de dato de la columna 
-# MAGIC     * column_properties: propiedades adicionales de la columna como restricción a valores nulos, descripción, enmascaramiento, etc.
-# MAGIC     * table_constraint: restricciones sobre la tabla como particiones, clusterización, descripción
+# MAGIC     * **column_identifier:** nombre de la columna
+# MAGIC     * **column_type:** tipo de dato de la columna 
+# MAGIC     * **column_properties:** propiedades adicionales de la columna como restricción a valores nulos, descripción, enmascaramiento, etc.
+# MAGIC     * **table_constraint:** restricciones sobre la tabla como particiones, clusterización, descripción
 
 # COMMAND ----------
 
@@ -435,7 +428,6 @@ display(spark.sql(sql_command))
 # MAGIC
 # MAGIC Busca el catálogo de este laboratorio: **workshop_megacable**
 # MAGIC
-# MAGIC <br> </br>
 # MAGIC <div align="center">
 # MAGIC   <img src="images/Barra_Busqueda_Catalog_Explorer.png" alt="Descripción" width="800">
 # MAGIC </div>
@@ -447,14 +439,14 @@ display(spark.sql(sql_command))
 # MAGIC %md
 # MAGIC #### 3.4.2 Utiliza Catalog Explorer para crear Objetos
 # MAGIC
-# MAGIC ##### Crear esquemas
+# MAGIC Crear esquemas
 # MAGIC
 # MAGIC <div align="center">
 # MAGIC   <img src="images/Crear_Esquemas.png" alt="Descripción" width="800">
 # MAGIC </div>
 # MAGIC
 # MAGIC <br></br>
-# MAGIC Dentro de los esquemas puedes crear tablas, volumenes, modelos, vistas de métricas
+# MAGIC Dentro de los esquemas puedes crear tablas, volúmenes, modelos, vistas de métricas
 # MAGIC <div align="center">
 # MAGIC   <img src="images/Crear_Objetos_en_Esquema.png" alt="Descripción" width="800">
 # MAGIC </div>
@@ -503,9 +495,9 @@ display(spark.sql(sql_command))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 3.4.4 Explorar más sobre Unity Catalog
+# MAGIC #### 3.4.4 Explora más sobre Unity Catalog
 # MAGIC
-# MAGIC Utiliza los Product Tours de Databricks para explorar más sobre Unity Catalog, haz click en el siguiente enlace:
+# MAGIC Utiliza los Product Tours y Tutoriales de Databricks para explorar más sobre Unity Catalog, haz click en el siguiente enlace:
 # MAGIC
 # MAGIC - Product Tours: https://www.databricks.com/resources/demos/library?type=2030&platform=2520
 # MAGIC - Tutoriales: https://www.databricks.com/resources/demos/library?type=2031&platform=2520
@@ -515,17 +507,16 @@ display(spark.sql(sql_command))
 # MAGIC %md
 # MAGIC ## 4. Tags
 # MAGIC
-# MAGIC Las etiquetas (tags) en Databricks son atributos que consisten en claves y valores opcionales, utilizados para organizar y categorizar objetos en la plataforma. Estas etiquetas permiten facilitar la búsqueda y el descubrimiento de componentes.
+# MAGIC Las etiquetas (tags) en Databricks son atributos que consisten en claves y valores opcionales, utilizados para organizar y categorizar objetos en la plataforma. Estas etiquetas permiten facilitar la búsqueda y el descubrimiento de componentes; además de garantizar un gestión correcta de costos dentro de la plataforma.
 # MAGIC
+# MAGIC <!-- <div align="center">
+# MAGIC   <img src="images/Cost_Tags.png" alt="Descripción" width="600">
+# MAGIC </div> -->
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ### 4.1 Define tags sobre las tablas creadas
-
-# COMMAND ----------
-
-# MAGIC %md
 # MAGIC Tags sobre la tabla Clientes en la capa Bronze
 
 # COMMAND ----------
@@ -543,6 +534,18 @@ display(spark.sql(sql_command))
 # COMMAND ----------
 
 sql_command = f"""ALTER TABLE workshop_megacable.{usuario}_silver.clientes
+SET TAGS ('t_project' = 'workshop_megacable');"""
+
+display(spark.sql(sql_command))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Tags sobre la tabla Clientes en la capa Gold
+
+# COMMAND ----------
+
+sql_command = f"""ALTER TABLE workshop_megacable.{usuario}_gold.clientes
 SET TAGS ('t_project' = 'workshop_megacable');"""
 
 display(spark.sql(sql_command))

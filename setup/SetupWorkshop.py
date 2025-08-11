@@ -1,11 +1,15 @@
 # Databricks notebook source
-# MAGIC %pip install databricks-sdk -q
-# MAGIC
-# MAGIC from databricks.sdk import WorkspaceClient
-# MAGIC from databricks.sdk.service import pipelines
-# MAGIC import time
-# MAGIC
-# MAGIC w = WorkspaceClient()
+# MAGIC %pip install --upgrade databricks-sdk -q
+
+# COMMAND ----------
+
+dbutils.library.restartPython()
+
+# COMMAND ----------
+
+from databricks.sdk import WorkspaceClient
+from databricks.sdk.service import pipelines
+import time
 
 # COMMAND ----------
 

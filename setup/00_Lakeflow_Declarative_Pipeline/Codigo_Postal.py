@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %pip install databricks-sdk
+# %pip install databricks-sdk
 
 # COMMAND ----------
 

@@ -11,24 +11,22 @@
 
 w = WorkspaceClient()
 email = w.current_user.me().user_name
-usuario = usuario.split("@")[0].replace(".", "_")
+usuario = email.split("@")[0].replace(".", "_")
 
-# COMMAND ----------
+notebook_path = f'/Workspace/Users/{usuario}/Workshop_Megacable/setup/00_Lakeflow_Declarative_Pipeline/Codigo_Postal'
 
-w.jobs.list()
-
-# COMMAND ----------
-
-notebook_path = f'/Workspace/Users/{email}/Pruebas_Workshop/setup/00_Lakeflow_Declarative_Pipeline/Codigo_Postal'
 
 name = f"{usuario}_pipeline_codigo_postal"
+schema = f"{usuario}_bronze"
+
+# COMMAND ----------
 
 try:
     created = w.pipelines.create(
         continuous=False,
         name=name,
-        catalog='workshop_megacable',
-        schema=f'{usuario}_bronze',
+        catalog="workshop_megacable",
+        schema=schema,
         libraries=[pipelines.PipelineLibrary(notebook=pipelines.NotebookLibrary(path=notebook_path))],
         serverless=True,
         allow_duplicate_names=True

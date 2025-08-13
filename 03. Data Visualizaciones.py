@@ -25,29 +25,17 @@
 
 # COMMAND ----------
 
-# Import necessary libraries
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from pyspark.sql import functions as F
-from pyspark.sql.types import *
-
-# Set visualization parameters
-plt.style.use('seaborn-v0_8')
-sns.set_palette("husl")
-plt.rcParams['figure.figsize'] = (12, 6)
+spark.sql(f"USE workshop_megacable.{usuario}_gold")
 
 # COMMAND ----------
 
-# Load the data
-df = spark.table("workshop_megacable.{usuario}_gold.clientes")
+# MAGIC %md
+# MAGIC Validate schema
 
-# Basic data overview
-print(f"Total customers: {df.count():,}")
-print(f"Total columns: {len(df.columns)}")
-print("\nTable Schema:")
-df.printSchema()
+# COMMAND ----------
+
+result = spark.sql("SELECT current_schema()")
+display(result)
 
 # COMMAND ----------
 
@@ -64,7 +52,7 @@ df.printSchema()
 # MAGIC   estatus_cliente,
 # MAGIC   churn_cliente,
 # MAGIC   churn_razon
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes 
+# MAGIC FROM clientes 
 # MAGIC LIMIT 10
 
 # COMMAND ----------
@@ -80,7 +68,7 @@ df.printSchema()
 # MAGIC   estatus_cliente,
 # MAGIC   COUNT(*) as total_customers,
 # MAGIC   ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 2) as percentage
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC GROUP BY estatus_cliente
 # MAGIC ORDER BY total_customers DESC
 
@@ -92,11 +80,37 @@ df.printSchema()
 # MAGIC   churn_razon,
 # MAGIC   COUNT(*) as churned_customers,
 # MAGIC   ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 2) as percentage_of_churn
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC WHERE estatus_cliente = 'Churned'
 # MAGIC   AND churn_razon IS NOT NULL
 # MAGIC GROUP BY churn_razon
 # MAGIC ORDER BY churned_customers DESC
+
+# COMMAND ----------
+
+# Import necessary libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from pyspark.sql import functions as F
+from pyspark.sql.types import *
+
+# Set visualization parameters
+plt.style.use('seaborn-v0_8')
+sns.set_palette("husl")
+plt.rcParams['figure.figsize'] = (12, 6)
+
+# COMMAND ----------
+
+# Load the data
+df = spark.table("clientes")
+
+# Basic data overview
+print(f"Total customers: {df.count():,}")
+print(f"Total columns: {len(df.columns)}")
+print("\nTable Schema:")
+df.printSchema()
 
 # COMMAND ----------
 
@@ -105,7 +119,7 @@ churn_summary = spark.sql("""
     SELECT 
         estatus_cliente,
         COUNT(*) as count
-    FROM workshop_megacable.{usuario}_gold.clientes
+    FROM clientes
     GROUP BY estatus_cliente
 """).toPandas()
 
@@ -150,7 +164,7 @@ plt.show()
 # MAGIC   COUNT(*) as total_customers,
 # MAGIC   SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) as churned_customers,
 # MAGIC   ROUND(SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) as churn_rate
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC GROUP BY genero, 
 # MAGIC   CASE 
 # MAGIC     WHEN edad < 30 THEN '18-29'
@@ -175,7 +189,7 @@ demo_data = spark.sql("""
         COUNT(*) as total_customers,
         SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) as churned_customers,
         ROUND(SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) as churn_rate
-    FROM workshop_megacable.{usuario}_gold.clientes
+    FROM clientes
     GROUP BY genero, 
         CASE 
             WHEN edad < 30 THEN '18-29'
@@ -221,7 +235,7 @@ plt.show()
 # MAGIC   SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) as churned_customers,
 # MAGIC   ROUND(SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) as churn_rate,
 # MAGIC   ROUND(AVG(tenencia_meses), 1) as avg_tenure_months
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC GROUP BY tipo_contrato, 
 # MAGIC   CASE 
 # MAGIC     WHEN tenencia_meses <= 12 THEN '0-12 months'
@@ -241,7 +255,7 @@ contract_data = spark.sql("""
         COUNT(*) as total_customers,
         SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) as churned_customers,
         ROUND(SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) as churn_rate
-    FROM workshop_megacable.{usuario}_gold.clientes
+    FROM clientes
     GROUP BY tipo_contrato
     ORDER BY churn_rate DESC
 """).toPandas()
@@ -263,7 +277,7 @@ for bar in bars:
 # Tenure distribution
 tenure_data = spark.sql("""
     SELECT tenencia_meses, estatus_cliente 
-    FROM workshop_megacable.{usuario}_gold.clientes
+    FROM clientes
 """).toPandas()
 
 plt.subplot(1, 3, 2)
@@ -284,7 +298,7 @@ service_data = spark.sql("""
         COUNT(*) as total_customers,
         SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) as churned_customers,
         ROUND(SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) as churn_rate
-    FROM workshop_megacable.{usuario}_gold.clientes
+    FROM clientes
     GROUP BY COALESCE(tipo_internet, 'No Internet')
     ORDER BY churn_rate DESC
 """).toPandas()
@@ -324,7 +338,7 @@ plt.show()
 # MAGIC   ROUND(SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) as churn_rate,
 # MAGIC   ROUND(AVG(cargo_mensual), 2) as avg_monthly_charge,
 # MAGIC   ROUND(SUM(CASE WHEN estatus_cliente = 'Churned' THEN cargo_mensual ELSE 0 END), 2) as monthly_revenue_at_risk
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC GROUP BY 
 # MAGIC   CASE 
 # MAGIC     WHEN cargo_mensual < 30 THEN 'Budget ($0-30)'
@@ -344,7 +358,7 @@ plt.show()
 # MAGIC   SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) as churned_customers,
 # MAGIC   ROUND(SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) as churn_rate,
 # MAGIC   ROUND(AVG(cargo_mensual), 2) as avg_monthly_charge
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC GROUP BY tipo_pago
 # MAGIC ORDER BY churn_rate DESC
 
@@ -356,7 +370,7 @@ revenue_data = spark.sql("""
         cargo_mensual,
         total_ingreso,
         estatus_cliente
-    FROM workshop_megacable.{usuario}_gold.clientes
+    FROM clientes
 """).toPandas()
 
 plt.figure(figsize=(15, 5))
@@ -389,7 +403,7 @@ revenue_tier_data = spark.sql("""
             ELSE 'Enterprise'
         END as tier,
         SUM(CASE WHEN estatus_cliente = 'Churned' THEN cargo_mensual ELSE 0 END) as revenue_at_risk
-    FROM workshop_megacable.{usuario}_gold.clientes
+    FROM clientes
     GROUP BY 
         CASE 
             WHEN cargo_mensual < 30 THEN 'Budget'
@@ -429,7 +443,7 @@ plt.show()
 # MAGIC   SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) as churned_customers,
 # MAGIC   ROUND(SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) as churn_rate,
 # MAGIC   AVG(poblacion) as avg_population
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC GROUP BY ciudad
 # MAGIC HAVING COUNT(*) >= 2  -- Only cities with multiple customers
 # MAGIC ORDER BY churned_customers DESC
@@ -445,7 +459,7 @@ plt.show()
 # MAGIC   COUNT(*) as total_customers,
 # MAGIC   SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) as churned_customers,
 # MAGIC   ROUND(SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) as churn_rate
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC GROUP BY servicio_telefono
 # MAGIC
 # MAGIC UNION ALL
@@ -456,7 +470,7 @@ plt.show()
 # MAGIC   COUNT(*) as total_customers,
 # MAGIC   SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) as churned_customers,
 # MAGIC   ROUND(SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) as churn_rate
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC GROUP BY servicio_internet
 # MAGIC
 # MAGIC UNION ALL
@@ -467,7 +481,7 @@ plt.show()
 # MAGIC   COUNT(*) as total_customers,
 # MAGIC   SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) as churned_customers,
 # MAGIC   ROUND(SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) as churn_rate
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC GROUP BY seguridad_online
 # MAGIC
 # MAGIC ORDER BY churn_rate DESC
@@ -496,7 +510,7 @@ plt.show()
 # MAGIC   ROUND(AVG(cargo_mensual), 2) as avg_monthly_revenue,
 # MAGIC   ROUND(AVG(total_ingreso), 2) as avg_total_revenue,
 # MAGIC   ROUND(SUM(CASE WHEN estatus_cliente = 'Churned' THEN total_ingreso ELSE 0 END), 2) as total_revenue_lost
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC GROUP BY 
 # MAGIC   CASE 
 # MAGIC     WHEN tenencia_meses <= 6 AND cargo_mensual > 70 THEN 'High Value New Customer'
@@ -521,15 +535,15 @@ plt.show()
 # MAGIC   'Total Customers' as metric,
 # MAGIC   FORMAT_NUMBER(COUNT(*), 0) as value,
 # MAGIC   'customers' as unit
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
-# MAGIC
+# MAGIC FROM clientes
+# MAGIC   
 # MAGIC UNION ALL
 # MAGIC
 # MAGIC SELECT 
 # MAGIC   'Churned Customers' as metric,
 # MAGIC   FORMAT_NUMBER(SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END), 0) as value,
 # MAGIC   'customers' as unit
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC
 # MAGIC UNION ALL
 # MAGIC
@@ -537,7 +551,7 @@ plt.show()
 # MAGIC   'Overall Churn Rate' as metric,
 # MAGIC   CONCAT(ROUND(SUM(CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1), '%') as value,
 # MAGIC   'percentage' as unit
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC
 # MAGIC UNION ALL
 # MAGIC
@@ -545,7 +559,7 @@ plt.show()
 # MAGIC   'Monthly Revenue at Risk' as metric,
 # MAGIC   CONCAT('$', FORMAT_NUMBER(SUM(CASE WHEN estatus_cliente = 'Churned' THEN cargo_mensual ELSE 0 END), 2)) as value,
 # MAGIC   'dollars' as unit
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC
 # MAGIC UNION ALL
 # MAGIC
@@ -553,7 +567,7 @@ plt.show()
 # MAGIC   'Average Customer Tenure' as metric,
 # MAGIC   CONCAT(ROUND(AVG(tenencia_meses), 1), ' months') as value,
 # MAGIC   'months' as unit
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 # MAGIC
 # MAGIC UNION ALL
 # MAGIC
@@ -561,7 +575,7 @@ plt.show()
 # MAGIC   'Average Monthly Revenue' as metric,
 # MAGIC   CONCAT('$', FORMAT_NUMBER(AVG(cargo_mensual), 2)) as value,
 # MAGIC   'dollars' as unit
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC FROM clientes
 
 # COMMAND ----------
 
@@ -574,34 +588,51 @@ plt.show()
 # MAGIC -- Create optimized view for Genie natural language queries
 # MAGIC CREATE OR REPLACE VIEW workshop_megacable.analysis.churn_analytics_materialized_view AS
 # MAGIC SELECT 
-# MAGIC   id_cliente,
-# MAGIC   genero,
-# MAGIC   edad,
-# MAGIC   casado,
-# MAGIC   dependientes,
-# MAGIC   ciudad,
-# MAGIC   codigo_postal,
-# MAGIC   tenencia_meses,
-# MAGIC   tipo_contrato,
-# MAGIC   tipo_pago,
-# MAGIC   servicio_telefono,
-# MAGIC   servicio_internet,
-# MAGIC   tipo_internet,
-# MAGIC   seguridad_online,
-# MAGIC   backup_online,
-# MAGIC   soporte_premium,
-# MAGIC   tv_streaming,
-# MAGIC   cargo_mensual,
-# MAGIC   total_ingreso,
-# MAGIC   estatus_cliente,
-# MAGIC   CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END as es_churn,
-# MAGIC   churn_razon,
-# MAGIC   CASE 
-# MAGIC     WHEN tenencia_meses <= 6 AND cargo_mensual > 70 THEN 'Alto Valor Nuevo'
-# MAGIC     WHEN tenencia_meses <= 12 AND tipo_contrato = 'Month-to-Month' THEN 'Nuevo En Riesgo'
-# MAGIC     WHEN tenencia_meses > 36 AND cargo_mensual > 80 THEN 'Alto Valor Leal'
-# MAGIC     WHEN tenencia_meses > 24 THEN 'Estable Largo Plazo'
-# MAGIC     WHEN cargo_mensual < 30 THEN 'Económico'
-# MAGIC     ELSE 'Estándar'
-# MAGIC   END as segmento_cliente
-# MAGIC FROM workshop_megacable.{usuario}_gold.clientes
+# MAGIC id_cliente,
+# MAGIC genero,
+# MAGIC edad,
+# MAGIC CASE 
+# MAGIC   WHEN edad < 30 THEN 'Joven (18-29)'
+# MAGIC   WHEN edad < 45 THEN 'Adulto (30-44)'
+# MAGIC   WHEN edad < 60 THEN 'Maduro (45-59)'
+# MAGIC   ELSE 'Senior (60+)'
+# MAGIC END as grupo_edad,
+# MAGIC casado,
+# MAGIC dependientes,
+# MAGIC ciudad,
+# MAGIC codigo_postal,
+# MAGIC tenencia_meses,
+# MAGIC CASE 
+# MAGIC   WHEN tenencia_meses <= 12 THEN 'Nuevo (0-12 meses)'
+# MAGIC   WHEN tenencia_meses <= 36 THEN 'Establecido (13-36 meses)'
+# MAGIC   ELSE 'Leal (36+ meses)'
+# MAGIC END as categoria_tenencia,
+# MAGIC tipo_contrato,
+# MAGIC tipo_pago,
+# MAGIC servicio_telefono,
+# MAGIC servicio_internet,
+# MAGIC tipo_internet,
+# MAGIC seguridad_online,
+# MAGIC backup_online,
+# MAGIC soporte_premium,
+# MAGIC tv_streaming,
+# MAGIC cargo_mensual,
+# MAGIC CASE 
+# MAGIC   WHEN cargo_mensual < 30 THEN 'Económico'
+# MAGIC   WHEN cargo_mensual < 60 THEN 'Estándar'
+# MAGIC   WHEN cargo_mensual < 90 THEN 'Premium'
+# MAGIC   ELSE 'Empresarial'
+# MAGIC END as nivel_ingresos,
+# MAGIC total_ingreso,
+# MAGIC estatus_cliente,
+# MAGIC CASE WHEN estatus_cliente = 'Churned' THEN 1 ELSE 0 END as es_churn,
+# MAGIC churn_razon,
+# MAGIC CASE 
+# MAGIC   WHEN tenencia_meses <= 6 AND cargo_mensual > 70 THEN 'Alto Valor Nuevo'
+# MAGIC   WHEN tenencia_meses <= 12 AND tipo_contrato = 'Month-to-Month' THEN 'Nuevo En Riesgo'
+# MAGIC   WHEN tenencia_meses > 36 AND cargo_mensual > 80 THEN 'Alto Valor Leal'
+# MAGIC   WHEN tenencia_meses > 24 THEN 'Estable Largo Plazo'
+# MAGIC   WHEN cargo_mensual < 30 THEN 'Económico'
+# MAGIC   ELSE 'Estándar'
+# MAGIC END as segmento_cliente
+# MAGIC FROM clientes

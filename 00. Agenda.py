@@ -5,7 +5,7 @@
 # MAGIC
 # MAGIC Presentan:
 # MAGIC
-# MAGIC * Miguel Jiménez - Solutions Architect
+# MAGIC * Miguel Jiménez - Sr. Solutions Engineer
 # MAGIC * Alberto Ramírez - Solutions Architect
 # MAGIC * Nicky Moreno - Business Development Representative
 # MAGIC * Alfredo Rubio - Sales Hispanic LATAM Director

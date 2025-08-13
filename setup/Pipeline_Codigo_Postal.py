@@ -1,9 +1,9 @@
 # Databricks notebook source
-# %pip install --upgrade databricks-sdk -q
+# MAGIC %pip install --upgrade databricks-sdk -q
 
 # COMMAND ----------
 
-# dbutils.library.restartPython()
+dbutils.library.restartPython()
 
 # COMMAND ----------
 
@@ -30,8 +30,7 @@ try:
         catalog="workshop_megacable",
         schema=schema,
         libraries=[pipelines.PipelineLibrary(notebook=pipelines.NotebookLibrary(path=notebook_path))],
-        serverless=True,
-        allow_duplicate_names=True
+        serverless=True
     )
     pipeline_url = f"{w.config.host}/pipelines/{created.pipeline_id}"
 

@@ -174,13 +174,15 @@
 # MAGIC #### 5.1.1 Realiza una copia de los datos a un Volumen de Databricks
 # MAGIC
 # MAGIC Ejecuta la siguiente celda para realizar la copia de datos desde el repositorio de GitHub hacia nuestro volúmen en Databricks
-# MAGIC
-# MAGIC Toma en cuenta lo siguiente:
-# MAGIC 1. **input_path:** ruta del volumen/almacenamiento donde se guardan los archivos a procesar
 
 # COMMAND ----------
 
 # MAGIC %run ./setup/Copia_Clientes1
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Ejecuta la siguiente celda para leer archivo CSV ingestado desde nuestro repositorio Git
 
 # COMMAND ----------
 
@@ -327,7 +329,7 @@ display(spark.sql(sql_command))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 3. Realiza otra copia de archivos hacia el Volumen de clientes
+# MAGIC 3. Realiza otra copia de archivos hacia el Volumen de clientes desde nuestro repositorio GitHub
 
 # COMMAND ----------
 
@@ -535,7 +537,7 @@ bronze_clientes.count()
 
 # COMMAND ----------
 
-display(bronze_clientes.limit(50))
+display(bronze_clientes.limit(500))
 
 # COMMAND ----------
 
@@ -568,16 +570,6 @@ silver_table = spark.read.table(f'workshop_megacable.{usuario}_silver.clientes')
 # COMMAND ----------
 
 silver_table.write.mode("overwrite").saveAsTable(f"workshop_megacable.{usuario}_gold.clientes")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## 5. BONUS: Utiliza Jobs para orquestar Notebooks (y otros componentes)
-# MAGIC
-
-# COMMAND ----------
-
-
 
 # COMMAND ----------
 
@@ -620,7 +612,7 @@ silver_table.write.mode("overwrite").saveAsTable(f"workshop_megacable.{usuario}_
 # MAGIC <br>
 # MAGIC
 # MAGIC <div align="center">
-# MAGIC   <img src="images/Cat_Im_Cooking.gif" alt="Descripción" width="400">
+# MAGIC   <img src="images/cat-work-in-progress.gif" alt="Descripción" width="400">
 # MAGIC </div>
 
 # COMMAND ----------

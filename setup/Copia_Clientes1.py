@@ -20,6 +20,13 @@ spark.sql(f"""CREATE VOLUME IF NOT EXISTS workshop_megacable.{usuario}_raw_data.
 
 # COMMAND ----------
 
+input_path = f"/Volumes/workshop_megacable/{usuario}_raw_data/clientes/raw_data/"
+checkpoint_path = f"/Volumes/workshop_megacable/{usuario}_raw_data/clientes/checkpoints/"
+table_name = f"workshop_megacable.{usuario}_bronze.clientes"  
+schema_location = f"/Volumes/workshop_megacable/{usuario}_raw_data/clientes/schemas/"
+
+# COMMAND ----------
+
 download_url = "https://raw.githubusercontent.com/MiguelAngelJMZ/Data_WorkshopMegacable/refs/heads/main/clientes_parte1.csv"
 file_name = "clientes_parte1.csv"
 catalog = 'workshop_megacable'

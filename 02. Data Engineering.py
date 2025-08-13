@@ -603,7 +603,7 @@ silver_table.write.mode("overwrite").saveAsTable(f"workshop_megacable.{usuario}_
 # MAGIC %md
 # MAGIC # ¡¡¡FELICIDADES!!!
 # MAGIC
-# MAGIC Haz acabado la  primera parte de este laborario práctico, ahora sabes que mediante databricks de Databricks puedes realizar ETL's de una forma fácil y escalable.
+# MAGIC Haz acabado la segunda parte de este laborario práctico, ahora sabes que mediante databricks de Databricks puedes realizar ETL's de una forma fácil y escalable.
 # MAGIC
 # MAGIC La siguiente parte del laborario se centra en Data Visualization. Vamos a ello:
 # MAGIC

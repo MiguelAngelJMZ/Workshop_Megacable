@@ -142,7 +142,7 @@ display(spark.sql(sql_command))
 # MAGIC
 # MAGIC Un esquema en Unity Catalog es similar al de los esquemas o bases de datos con los que probablemente ya estás familiarizado. Los esquemas contienen objetos de datos como tablas y vistas, pero también pueden contener funciones y modelos de aprendizaje automático/inteligencia artificial.
 # MAGIC
-# MAGIC Para este taller, usaremos la arquitectura del esquema medallón, un enfoque que organiza tus datos en diferentes etapas de procesamiento. Crearemos un esquema para cada una de ellas:
+# MAGIC Para este laboratorio, usaremos la arquitectura del esquema medallón, un enfoque que organiza tus datos en diferentes etapas de procesamiento. Crearemos un esquema para cada una de ellas:
 # MAGIC
 # MAGIC - **Bronze** (`workshop_megable.<nombre_usuario>.bronze`): Aquí recibiremos los datos en crudo, sin ninguna modificación. Es nuestra zona de aterrizaje.
 # MAGIC
@@ -192,7 +192,7 @@ display(spark.sql(sql_command))
 # MAGIC %md
 # MAGIC #### 4.2.3 Metadatos del esquema
 # MAGIC
-# MAGIC Utiliza el comando `DESCRIBE SCHEMA <nombre_del_catalogo>.<nombre_esquema>` para consultar los metadatos básicos del cátalogo como Nombre, Comentarios y Propitarios. En adición, utiliza el comando `EXTENDED` para consultar metadatos adicionales del catálogo.
+# MAGIC Utiliza el comando `DESCRIBE SCHEMA <nombre_del_catalogo>.<nombre_esquema>` para consultar los metadatos básicos del cátalogo como Nombre, Comentarios y Propietarios. En adición, utiliza el comando `EXTENDED` para consultar metadatos adicionales del catálogo.
 
 # COMMAND ----------
 
@@ -230,7 +230,7 @@ display(spark.sql(sql_command_gold))
 # MAGIC
 # MAGIC Las "Managed Tables" en Unity Catalog son tablas gestionadas por Databricks, donde tanto los metadatos como los datos físicos (archivos en almacenamiento) son controlados automáticamente por la plataforma. Cuando creas una tabla gestionada, Unity Catalog se encarga de almacenar los archivos de datos en una ubicación definida por el sistema y administra toda la vida útil de esos datos, incluyendo su creación y eliminación.
 # MAGIC
-# MAGIC Para este laboratorio vamos a trabajar con las siguientes tablas de la telcom ficticia llamada Telio:
+# MAGIC Para este laboratorio vamos a trabajar con las siguientes tablas de la telecom ficticia llamada Telio:
 # MAGIC 1. **Clientes:** la tabla contiene información sobre clientes de una empresa de telecomunicaciones en California durante el segundo trimestre de 2024. Cada registro representa a un cliente y contiene detalles sobre sus datos demográficos, ubicación, antigüedad, servicios de suscripción, estado del trimestre (inscripción, permanencia o cancelación) y mucho más.
 # MAGIC 2. **Código Postal**: Contiene información complementaria sobre las poblaciones estimadas para los códigos postales de California en la tabla de Clientes.
 
